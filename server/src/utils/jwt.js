@@ -1,0 +1,12 @@
+import jwt from 'jsonwebtoken'
+
+export function createAccessToken(userId) {
+  return jwt.sign({ sub: userId, type: 'access' }, process.env.JWT_ACCESS_SECRET, { expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m' })
+}
+
+export function createRefreshToken(userId) {
+  return jwt.sign({ sub: userId, type: 'refresh' }, process.env.JWT_REFRESH_SECRET, { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d' })
+}
+
+export function verifyAccessToken(token) { return jwt.verify(token, process.env.JWT_ACCESS_SECRET) }
+export function verifyRefreshToken(token) { return jwt.verify(token, process.env.JWT_REFRESH_SECRET) }

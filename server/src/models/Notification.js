@@ -1,0 +1,3 @@
+import mongoose from 'mongoose'
+const notificationSchema = new mongoose.Schema({ recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true }, type: { type: String, enum: ['reminder', 'overdue', 'task_assigned', 'task_updated', 'project_update', 'daily_summary', 'weekly_summary'], required: true }, title: { type: String, required: true }, message: { type: String, required: true }, entityType: { type: String }, entityId: { type: mongoose.Schema.Types.ObjectId }, status: { type: String, enum: ['unread', 'read', 'archived'], default: 'unread', index: true }, deliveredAt: { type: Date, default: null } }, { timestamps: true, versionKey: false })
+export default mongoose.model('Notification', notificationSchema)

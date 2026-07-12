@@ -1,0 +1,3 @@
+import { Server } from 'socket.io'
+import { verifyAccessToken } from '../utils/jwt.js'
+export function createSocketServer(httpServer) { const io = new Server(httpServer, { cors: { origin: (process.env.CLIENT_URL || 'http://localhost:5173').split(','), credentials: true } }); io.use((socket, next) => { try { const token = socket.handshake.auth?.token; if (!token) return next(new Error('Authentication required.')); socket.userId = verifyAccessToken(token).sub; return next() } catch { return next(new Error('Invalid token.')) } }); io.on('connection', (socket) => socket.join(`user:${socket.userId}`)); return io }

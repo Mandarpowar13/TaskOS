@@ -1,0 +1,3 @@
+import mongoose from 'mongoose'
+const projectSchema = new mongoose.Schema({ name: { type: String, required: true, trim: true, maxlength: 120 }, description: { type: String, default: '' }, color: { type: String, default: '#2563eb' }, status: { type: String, enum: ['active', 'on-hold', 'completed', 'archived'], default: 'active' }, owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], progress: { type: Number, min: 0, max: 100, default: 0 } }, { timestamps: true, versionKey: false })
+export default mongoose.model('Project', projectSchema)
