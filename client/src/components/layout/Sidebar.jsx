@@ -2,6 +2,8 @@ import { BarChart3, Bell, CalendarDays, FolderKanban, LayoutDashboard, ListTodo,
 import { NavLink } from 'react-router-dom'
 import { useUiStore } from '../../store/useUiStore'
 import IconButton from '../ui/IconButton'
+import { useQuery } from '@tanstack/react-query'
+import { getDashboard } from '../../services/dashboardService'
 
 const navigation = [
   { label: 'Dashboard', to: '/', icon: LayoutDashboard }, { label: 'Tasks', to: '/tasks', icon: ListTodo },
@@ -20,6 +22,8 @@ function NavItems({ items, onNavigate }) {
 
 export default function Sidebar() {
   const { sidebarOpen, setSidebarOpen } = useUiStore()
+  const { data: dashboard } = useQuery({ queryKey: ['dashboard'], queryFn: getDashboard })
+  const focusScore = dashboard?.metrics?.focusScore ?? 0
   return (
     <>
       {sidebarOpen && <button aria-label="Close navigation" className="fixed inset-0 z-30 bg-slate-950/30 lg:hidden" onClick={() => setSidebarOpen(false)} />}
@@ -34,8 +38,8 @@ export default function Sidebar() {
         <nav className="space-y-1"><p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[.14em] text-slate-400">Workspace</p><NavItems items={navigation} onNavigate={() => setSidebarOpen(false)} /></nav>
         <nav className="mt-8 space-y-1"><p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[.14em] text-slate-400">Manage</p><NavItems items={secondaryNavigation} onNavigate={() => setSidebarOpen(false)} /></nav>
         <div className="mt-auto rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/70">
-          <div className="flex items-center justify-between"><div><p className="text-xs font-semibold text-slate-800 dark:text-slate-200">Your focus score</p><p className="mt-1 text-xs text-slate-500">Great momentum today</p></div><span className="text-lg font-bold text-blue-600 dark:text-blue-400">86</span></div>
-          <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700"><div className="h-full w-[86%] rounded-full bg-blue-600" /></div>
+          <div className="flex items-center justify-between"><div><p className="text-xs font-semibold text-slate-800 dark:text-slate-200">Your focus score</p><p className="mt-1 text-xs text-slate-500">Based on today&apos;s workload</p></div><span className="text-lg font-bold text-blue-600 dark:text-blue-400">{focusScore}</span></div>
+          <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700"><div className="h-full rounded-full bg-blue-600" style={{ width: `${focusScore}%` }} /></div>
         </div>
       </aside>
     </>

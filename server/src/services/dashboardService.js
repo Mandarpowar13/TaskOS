@@ -9,10 +9,11 @@ export const dashboardService = {
       Task.countDocuments({ ...scope, completionDate: { $gte: startToday, $lt: endToday } }),
       Task.countDocuments({ ...scope, status: { $nin: ['completed', 'cancelled'] } }),
       Task.countDocuments({ ...scope, dueDate: { $lt: startToday }, status: { $nin: ['completed', 'cancelled'] } }),
-      Task.aggregate([{ $match: { ...scope, createdAt: { $gte: weekStart } } }, { $group: { _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } }, created: { $sum: 1 }, completed: { $sum: { $cond: [{ $eq: ['$status', 'completed'] }, 1, 0] } } } }]),
+      Task.aggregate([{ $match: { ...scope, completionDate: { $gte: weekStart, $lte: now } } }, { $group: { _id: { $dateToString: { format: '%Y-%m-%d', date: '$completionDate' } }, completed: { $sum: 1 } } }, { $sort: { _id: 1 } }]),
       activityService.recentForUser(user.id),
       Task.find({ ...scope, reminderDate: { $gte: now }, status: { $nin: ['completed', 'cancelled'] } }).sort({ reminderDate: 1 }).limit(5),
     ])
-    return { todayTasks, metrics: { completedToday, pending, overdue }, weeklyProgress, recentActivity, upcomingReminders }
+    const focusScore = Math.max(0, Math.min(100, 70 + (completedToday * 8) - (overdue * 20) - Math.min(pending * 2, 25)))
+    return { todayTasks, metrics: { completedToday, pending, overdue, focusScore }, weeklyProgress, recentActivity, upcomingReminders }
   },
 }
