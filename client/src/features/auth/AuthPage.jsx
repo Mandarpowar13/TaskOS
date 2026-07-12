@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { login, register } from '../../services/authService'
 import { useAuthStore } from '../../store/useAuthStore'
 
-const schema = z.object({ name: z.string().trim().min(2, 'Enter your name.').max(100).optional(), email: z.string().trim().email('Enter a valid email.'), password: z.string().min(8, 'Use at least 8 characters.').max(128) })
+const schema = z.object({ name: z.union([z.string().trim().min(2, 'Enter your name.').max(100), z.literal('')]).optional(), email: z.string().trim().email('Enter a valid email.'), password: z.string().min(8, 'Use at least 8 characters.').max(128) })
 const inputClass = 'mt-1.5 h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-500/10'
 
 export default function AuthPage() {
