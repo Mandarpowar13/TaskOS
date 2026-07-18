@@ -113,10 +113,10 @@ try {
         assignedUser: user._id,
       };
     });
-    if (tasks.length) await Task.insertMany(tasks);
+    const inserted = tasks.length ? await Task.insertMany(tasks) : [];
     console.log(
       JSON.stringify(
-        { mode: "imported", ...summary, imported: tasks.length },
+        { mode: "imported", ...summary, imported: inserted.length },
         null,
         2,
       ),
