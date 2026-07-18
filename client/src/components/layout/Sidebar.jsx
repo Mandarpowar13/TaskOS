@@ -1,4 +1,4 @@
-import { BarChart3, Bell, CalendarDays, FolderKanban, LayoutDashboard, ListTodo, Settings, FileText, X } from 'lucide-react'
+import { BarChart3, Bell, CalendarDays, Columns3, FolderKanban, LayoutDashboard, ListTodo, Settings, FileText, X } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { useUiStore } from '../../store/useUiStore'
 import IconButton from '../ui/IconButton'
@@ -7,7 +7,7 @@ import { getDashboard } from '../../services/dashboardService'
 
 const navigation = [
   { label: 'Dashboard', to: '/', icon: LayoutDashboard }, { label: 'Tasks', to: '/tasks', icon: ListTodo },
-  { label: 'Projects', to: '/projects', icon: FolderKanban }, { label: 'Calendar', to: '/calendar', icon: CalendarDays },
+  { label: 'Projects', to: '/projects', icon: FolderKanban }, { label: 'Calendar', to: '/calendar', icon: CalendarDays }, { label: 'Kanban', to: '/tasks/board', icon: Columns3 },
   { label: 'Analytics', to: '/analytics', icon: BarChart3 }, { label: 'Reports', to: '/reports', icon: FileText },
 ]
 const secondaryNavigation = [{ label: 'Notifications', to: '/notifications', icon: Bell }, { label: 'Settings', to: '/settings', icon: Settings }]
