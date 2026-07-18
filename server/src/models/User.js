@@ -14,10 +14,12 @@ const userSchema = new mongoose.Schema({
   refreshTokenHash: { type: String, select: false },
   lastLogin: { type: Date },
   status: { type: String, enum: ['active', 'inactive', 'suspended'], default: 'active' },
-}, { timestamps: true, versionKey: false })
+}, { timestamps: true, versionKey: false, virtuals: true })
+
+userSchema.virtual('id').get(function() { return this._id })
 
 userSchema.pre('save', async function hashPassword(next) { if (this.isModified('password')) this.password = await bcrypt.hash(this.password, 12); next() })
 userSchema.methods.comparePassword = function comparePassword(candidate) { return bcrypt.compare(candidate, this.password) }
-userSchema.methods.toJSON = function toJSON() { const object = this.toObject(); delete object.password; delete object.refreshTokenHash; return object }
+userSchema.methods.toJSON = function toJSON() { const object = this.toObject({ virtuals: true }); delete object.password; delete object.refreshTokenHash; return object }
 
 export default mongoose.model('User', userSchema)
