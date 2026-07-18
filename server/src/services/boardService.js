@@ -20,6 +20,11 @@ export const boardService = {
     const lists = await ensureDefaultLists(user)
     return BoardList.create({ ...payload, owner: user.id, position: lists.length })
   },
+  async renameList(user, listId, name) {
+    const list = await BoardList.findOneAndUpdate({ _id: listId, owner: user.id }, { name }, { new: true, runValidators: true })
+    if (!list) throw new AppError('Board list not found.', 404)
+    return list
+  },
   async moveCard(user, taskId, listId) {
     const [task, list] = await Promise.all([
       taskRepository.findAccessibleById(taskId, user.id),
