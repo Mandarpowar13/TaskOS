@@ -8,6 +8,7 @@ const taskSchema = new mongoose.Schema({
   project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', default: null, index: true }, category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', default: null, index: true },
   priority: { type: String, enum: TASK_PRIORITIES, default: 'medium', index: true }, status: { type: String, enum: TASK_STATUSES, default: 'todo', index: true },
   assignedUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null, index: true }, createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+  boardList: { type: mongoose.Schema.Types.ObjectId, ref: 'BoardList', default: null, index: true },
   dueDate: { type: Date, default: null, index: true }, reminderDate: { type: Date, default: null, index: true }, estimatedTime: { type: Number, min: 0, default: null }, actualTime: { type: Number, min: 0, default: null },
   tags: [{ type: String, trim: true, maxlength: 40 }], attachments: [attachmentSchema], subtasks: [subtaskSchema], completionDate: { type: Date, default: null }, archived: { type: Boolean, default: false, index: true },
 }, { timestamps: true, versionKey: false })

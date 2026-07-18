@@ -8,6 +8,7 @@ import dashboardRoutes from './routes/dashboardRoutes.js'
 import notificationRoutes from './routes/notificationRoutes.js'
 import projectRoutes from './routes/projectRoutes.js'
 import analyticsRoutes from './routes/analyticsRoutes.js'
+import boardRoutes from './routes/boardRoutes.js'
 import searchRoutes from './routes/searchRoutes.js'
 import taskRoutes from './routes/taskRoutes.js'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
@@ -25,6 +26,7 @@ app.use('/api/categories', categoryRoutes)
 app.use('/api/tasks', taskRoutes)
 app.use('/api/projects', projectRoutes)
 app.use('/api/analytics', analyticsRoutes)
+app.use('/api/board', boardRoutes)
 app.use('/api/search', searchRoutes)
 app.use('/api/dashboard', dashboardRoutes)
 app.use('/api/notifications', notificationRoutes)
